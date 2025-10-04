@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Sentinela - Servidores</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Relatório Sentinela</h1>
+        <p class="subtitle">Análise detalhada de MS e Links - Multi-Servidores</p>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab(0)">🖥️ Servidor 1</button>
+            <button class="tab" onclick="showTab(1)">🖥️ Servidor 2</button>
+            <button class="tab" onclick="showTab(2)">📈 Resumo Geral</button>
+        </div>
+        
+        <!-- SERVIDOR 1 -->
+        <div class="tab-content active" id="tab0">
+            <h2>🖥️ Servidor 1 (<span id="totalServ1Count"></span> empreendimentos)</h2>
+            <div class="search-box">
+                <input type="text" id="searchInput1" placeholder="🔍 Pesquisar empreendimento..." onkeyup="filterTable('tableBody1', 'searchInput1')">
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-left">Empreendimento</th>
+                            <th class="text-center">MS</th>
+                            <th class="text-center">Link</th>
+                            <th class="text-left">Observação</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody1">
+                         <tr><td colspan="5" class="empty-message">Carregando dados...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <button class="download-btn" onclick="downloadExcel()">⬇️ Baixar Planilha Excel</button>
+        </div>
+        
+        <!-- SERVIDOR 2 -->
+        <div class="tab-content" id="tab1">
+            <h2>🖥️ Servidor 2 (<span id="totalServ2Count"></span> empreendimentos)</h2>
+            <div class="search-box">
+                <input type="text" id="searchInput2" placeholder="🔍 Pesquisar empreendimento..." onkeyup="filterTable('tableBody2', 'searchInput2')">
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-left">Empreendimento</th>
+                            <th class="text-center">MS</th>
+                            <th class="text-center">Link</th>
+                            <th class="text-left">Observação</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody2">
+                        <tr><td colspan="5" class="empty-message">Carregando dados...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <button class="download-btn" onclick="downloadExcel()">⬇️ Baixar Planilha Excel</button>
+        </div>
+        
+        <!-- RESUMO GERAL -->
+        <div class="tab-content" id="tab2">
+            <h2>📈 Resumo Geral</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total de Empreendimentos</div>
+                    <div class="stat-value" id="totalGeral">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Servidor 1</div>
+                    <div class="stat-value" id="totalServ1Resumo">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Servidor 2</div>
+                    <div class="stat-value" id="totalServ2Resumo">0</div>
+                </div>
+            </div>
+            
+            <button class="download-btn" onclick="downloadExcel()">⬇️ Baixar Planilha Excel Completa</button>
+        </div>
+    </div>
+
+    <!-- Modal de Edição -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Editar Empreendimento</h3>
+            <form id="editForm">
+                <input type="hidden" id="editEmpreendimentoOriginal">
+                <input type="hidden" id="editServidorIndex">
+                
+                <label for="editEmpreendimento">Empreendimento:</label>
+                <input type="text" id="editEmpreendimento" required>
+
+                <label for="editMS">MS:</label>
+                <select id="editMS">
+                    <option value="On">On</option>
+                    <option value="Off">Off</option>
+                    <option value="Travado">Travado</option>
+                    <option value="N/A">N/A</option>
+                </select>
+
+                <label for="editLink">Link:</label>
+                <select id="editLink">
+                    <option value="On">On</option>
+                    <option value="Off">Off</option>
+                    <option value="Sem Link">Sem Link</option>
+                    <option value="Sem imagem">Sem imagem</option>
+                    <option value="Não abre">Não abre</option>
+                    <option value="N/A">N/A</option>
+                </select>
+
+                <label for="editObservacao">Observação:</label>
+                <textarea id="editObservacao"></textarea>
+
+                <button type="submit">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="js/script.js"></script>
+</body>
+</html>
